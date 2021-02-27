@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Inventory Management</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+        <script src="https://use.fontawesome.com/a07e010f69.js"></script>
+        <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    </head>
+    <body>        
+        <nav class="navbar " role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+              <a class="navbar-item">
+                <h1 class="title">Inventory Manangement</h1>
+              </a>
+          
+              <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+              </a>
+            </div>
+          
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-end">
+                <div class="navbar-item">
+                  <div class="buttons">
+                    <a class="button is-dark"  href='{{ link.index }}'>
+                      <strong>DashBoard</strong>
+                    </a>
+                    <a class="button is-light" href='{{ link.location }}'>
+                        <strong>Location</strong>
+                    </a>
+                    <a class="button is-light" href='{{ link.product }}'>
+                        <strong>Products</strong>
+                    </a>
+                    <a class="button is-light" href='{{ link.movement }}'>
+                        <strong>Move Products</strong>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </nav>
+        {% block content %}
+        {% endblock %}
+        <script>
+            $(".modal-button").click(function() {
+               var target = $(this).data("target");
+               $("html").addClass("is-clipped");
+               $(target).addClass("is-active");
+            });
+            
+            $(".modal-close").click(function() {
+               $("html").removeClass("is-clipped");
+               $(this).parent().removeClass("is-active");
+            });
+         </script>
+    </body>
+</html>
