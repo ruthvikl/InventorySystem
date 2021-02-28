@@ -93,75 +93,74 @@
     {% endif %}
 </div>
 
-    <script>
-        const products = {};
-        // this contains unallocated products
-        {% for product in products %}
-            products["{{ product[1] }}"] = "{{ product[2] }}";
-        {% endfor %}
 
-        // this contains all allocated products in form --> product: location: quantity
-        let summary = JSON.parse({{ allocated|tojson }});
-        //console.log(summary);
 
-        let slider = document.getElementById("slider_range");
-        let output = document.getElementById("show_selected");
-        let max_limit = document.getElementById("max_limit");
 
-        let prod_name = document.getElementById("prod_name");
-        let to_loc = document.getElementById("to_loc");
-        let from_loc = document.getElementById("from_loc");
+<script>
+    const products = {};
+    {% for product in products %}
+        products["{{ product[1] }}"] = "{{ product[2] }}";
+    {% endfor %}
+    // this contains all allocated products in form --> product: location: quantity
+    let summary = JSON.parse(</script>{{ allocated|tojson }}<script>);
+    //console.log(summary);
 
-        //works fine DON'T TOUCH it lol
-        to_loc.onchange = function() {
-            let max_val;
-            if(!from_loc.value) {
-                max_val = products[(prod_name.value).toString()];
-                slider.setAttribute("max", max_val.toString());
-                max_limit.innerText = "Max: " + max_val;
-                //console.log('to_loc --> from_loc was null ', max_val)
+    let slider = document.getElementById("slider_range");
+    let output = document.getElementById("show_selected");
+    let max_limit = document.getElementById("max_limit");
 
-                if(max_val === 0){
-                    document.getElementById("submit").disabled = true;
-                }else{
-                    document.getElementById("submit").disabled = false;
-                }
-            }
+    let prod_name = document.getElementById("prod_name");
+    let to_loc = document.getElementById("to_loc");
+    let from_loc = document.getElementById("from_loc");
 
-            output.innerHTML = slider.value;
-        };
-
-        //works fine DON'T TOUCH it lol
-        from_loc.onchange = function(){
-            let max_val;
-            max_val = summary[(prod_name.value).toString()][(from_loc.value).toString()];
+    //works fine DON'T TOUCH it lol
+    to_loc.onchange = function() {
+        let max_val;
+        if(!from_loc.value) {
+            max_val = products[(prod_name.value).toString()];
             slider.setAttribute("max", max_val.toString());
             max_limit.innerText = "Max: " + max_val;
-            //console.log('from_loc --> to location updated ', max_val);
+            //console.log('to_loc --> from_loc was null ', max_val)
 
             if(max_val === 0){
                 document.getElementById("submit").disabled = true;
             }else{
                 document.getElementById("submit").disabled = false;
             }
-
-            output.innerHTML = slider.value;
-        };
+        }
 
         output.innerHTML = slider.value;
-        slider.oninput = function() {
-            output.innerHTML = this.value;
+    };
 
-            let curr_val = parseInt(this.value);
-            let max_val = parseInt(summary[(prod_name.value).toString()][(from_loc.value).toString()].toString());
+    from_loc.onchange = function(){
+        let max_val;
+        max_val = summary[(prod_name.value).toString()][(from_loc.value).toString()];
+        slider.setAttribute("max", max_val.toString());
+        max_limit.innerText = "Max: " + max_val;
 
-            if(curr_val > max_val){
-                document.getElementById("submit").disabled = true;
-            }else{
-                document.getElementById("submit").disabled = false;
-            }
+        if(max_val === 0){
+            document.getElementById("submit").disabled = true;
+        }else{
+            document.getElementById("submit").disabled = false;
+        }
 
-        };
+        output.innerHTML = slider.value;
+    };
 
-    </script>
+    output.innerHTML = slider.value;
+    slider.oninput = function() {
+        output.innerHTML = this.value;
+
+        let curr_val = parseInt(this.value);
+        let max_val = parseInt(summary[(prod_name.value).toString()][(from_loc.value).toString()].toString());
+
+        if(curr_val > max_val){
+            document.getElementById("submit").disabled = true;
+        }else{
+            document.getElementById("submit").disabled = false;
+        }
+
+    };
+
+</script>
 {% endblock %}

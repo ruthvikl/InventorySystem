@@ -3,11 +3,10 @@
 <div class="container" style="text-align:center">
     <h1 class="title is-2" align="center">Description</h1>    
         <div style="float: left;width:50%;">
-            <table class="table is-fullwidth">
+            <table class="table ">
                 <thead>
                     <tr>
-                        <th scope="col">loc_id</th>
-                        <th scope="col">Name</th>
+                        <th scope="col"> Available Locations</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -18,7 +17,6 @@
                     {%else %}
                     {% for warehouse in warehouses %}
                         <tr>
-                            <td>{{ warehouse[0] }}</td>
                             <td>{{ warehouse[1] }}</td>
                         </tr>
                         {% endfor %}
@@ -33,9 +31,9 @@
         <table class="table is-fullwidth">
             <thead>
                 <tr>
-                    <th scope="col">prod_id</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Count</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Un-Allocated</th>
+                    <th scope="col">Total Count</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,43 +42,22 @@
                     <td align="center" class="font-weight-light">No Product Data Available Yet</td>
                 </div>
                 {% else %}
-                {% for product in products %}
-                    <tr>
-                        <td>{{ product[0] }}</td>
-                        <td>{{ product[1] }}</td>
-                        <td>{{ product[2] }}</td>
-                    </tr>
-                {% endfor %}
+                    {% if database == None or database|length == 0 %}
+                                <td align="center" class="font-weight-light">Summary not available yet</td>
+                    {% else %}
+                        {% for product in products %}
+                            <tr>
+                                <td>{{ product[1] }}</td>
+                                {% for data in database %}
+                                    <td>{{ data[1] }}</td>
+                                    <td>{{ data[2] }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
                 {% endif %}
             </tbody>
         </table>
-    </div>
-        <div class="form-horizontal center" styele=""title="Summary">
-            <div>
-                <table class="table" style="margin-left: auto;margin-right: auto;">
-                    <thead> 
-                        <tr>
-                            <th scope="col">Product</th>
-                            <th scope="col">Un-Allocated</th>
-                            <th scope="col">Total Count</th>
-                        </tr>
-                    </thead>
-                    <thead>
-                        {% if database == None or database|length == 0 %}
-                            <td align="center" class="font-weight-light">Summary not available yet</td>
-                        {% else %}
-                        {% for data in database %}
-                            <tr>
-                                <td>{{ data[0] }}</td>
-                                <td>{{ data[1] }}</td>
-                                <td>{{ data[2] }}</td>
-                            </tr>
-                        {% endfor %}
-                        {% endif %}
-                    </thead>
-                </table>
-            </div>
-        </div>
     </div>
 </div>
 {% endblock %}

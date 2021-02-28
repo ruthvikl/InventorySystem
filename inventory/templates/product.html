@@ -35,45 +35,51 @@
                         <div id = "edit_{{ product[0] }}" class = "modal">
                             <div class = "modal-background"></div>
                             <form action="{{ url_for('edit', type='product') }}" method="post" class="base_form">
-                            <div class = "modal-content">
-                               <div class = "box">
-                                <div class="modal-body"><input name="prod_name" class="input is-small is-dark is-rounded" placeholder="{{ product[1] }}">
-                                    <input class="input is-small is-dark is-rounded"name="prod_quantity" placeholder="{{ product[2] }}" id="input_{{ product[0] }}" type="number">
-                                    <text class="font-weight-light">(only increase count)</text>
-                                    <script>
-                                        document.getElementById("input_{{ product[0] }}").oninput = function(){
-                                            let all = document.getElementsByClassName("btn btn-primary");
-                                            for(let i=0;i<all.length;i++){
-                                                all[i].disabled = true;
-                                            }
-                                            const curr_qty = {{ product[2] }};
-                                            let in_qty = parseInt(document.getElementById("input_{{ product[0] }}").value);
+                                <div class = "modal-content">
+                                    <div class = "box">
+                                        <div class="modal-body"><input name="prod_name" class="input is-small is-dark is-rounded" placeholder="{{ product[1] }}">
+                                            <input class="input is-small is-dark is-rounded"name="prod_quantity" placeholder="{{ product[2] }}" id="input_{{ product[0] }}" type="number">
+                                            <text class="font-weight-light">(only increase count)</text>
+                                            <script>
+                                                document.getElementById("input_{{ product[0] }}").oninput = function(){
+                                                    let all = document.getElementsByClassName("btn btn-primary");
+                                                    for(let i=0;i<all.length;i++){
+                                                        all[i].disabled = true;
+                                                    }
+                                                    const curr_qty = {{ product[2] }};
+                                                    let in_qty = parseInt(document.getElementById("input_{{ product[0] }}").value);
 
-                                            //console.log(in_qty);
-                                            //console.log(curr_qty);
+                                                    //console.log(in_qty);
+                                                    //console.log(curr_qty);
 
-                                            if(in_qty > curr_qty){
-                                                //console.log("OKAYY");
-                                                for(let i=0;i<all.length;i++){
-                                                    all[i].disabled = false;
-                                                }
-                                            }
-                                        };
-                                    </script>
-                                </div>
+                                                    if(in_qty > curr_qty){
+                                                        //console.log("OKAYY");
+                                                        for(let i=0;i<all.length;i++){
+                                                            all[i].disabled = false;
+                                                        }
+                                                    }
+                                                };
+                                            </script>
+                                        </div>
                                 <div class="modal-footer">
                                     <input name="prod_id" value="{{ product[0] }}" hidden aria-hidden="true">
-                                    <button type="submit" class="button is-black is-small">Save changes</button>
+                                    <button type="submit" class="button is-success is-small">
+                                        <span class="icon is-small">
+                                        <i class="fa fa-check"></i>
+                                        </span>
+                                        <span>Save changes</span>
+                                    </button>
                                 </div>
                                </div>
                             </div>
                             </form>
+                            
                             <button class = "modal-close is-large" aria-label = "close"></button>
                          </div>
                     </td>
-                </tr>
+                    </tr>
                 {% endfor %}
-                <!-- Inserting data --> 
+                <!-- Inserting data -->
                 <tr>
                     <form action = "{{ url_for('product') }}" method = "POST">
                         <td></td>
@@ -88,7 +94,22 @@
                         </td>
                     </form>
                 </tr>
-        </tbody>
-    </table>
-</div>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        let close = document.getElementsByClassName("btn btn-default");
+        for(let i=0; i<close.length; i++){
+            close[i].onclick = function () {
+                let clear_fields = document.getElementsByClassName("base_form");
+                for(let i=0;i<clear_fields.length;i++){
+                    clear_fields[i].reset();
+                }
+                let all = document.getElementsByClassName("btn btn-primary");
+                for(let i=0;i<all.length;i++){
+                    all[i].disabled = false;
+                }
+            }
+        }
+    </script>
 {% endblock %}

@@ -1,0 +1,94 @@
+{% extends 'base-template.html' %}
+{% block content %}
+<div class="container">
+    <table class="table  is-fullwidth">
+        <thead>
+            <th scope="col">Product ID</th>
+            <th scope="col">Product Name</th>
+            <th scope="col">Quantity</th>
+            <th></th>
+            <th></th>
+        </thead>
+        <tbody>
+            {% for product in products %}
+                <tr>
+                    <td>{{ product[0] }}</td>
+                    <td>{{ product[1] }}</td>
+                    <td>{{ product[2] }}</td>
+                    <td>
+                        <a href="{{ url_for('delete', prod_id=product[0], type='product') }}">
+                            <button name="button" type="button" class="button is-danger is-rounded is-small is-outlined" value= "delete">
+                                <span>Delete</span>
+                                <span class="icon is-small">
+                                    <i class="fa fa-times"></i>
+                                </span>
+                            </button>
+                        </a>
+                    </td>
+                    <td>
+                        <a name="button" value= "edit" type="button" class="button is-dark is-rounded is-small is-outlined modal-button" data-toggle="modal" data-target="#edit_{{ product[0] }}" >
+                            <span>Edit</span>
+                            <span class="icon is-small">
+                                <i class="fa fa-pencil"></i>
+                            </span>
+                        </a>
+                        <div id = "edit_{{ product[0] }}" class = "modal">
+                            <div class = "modal-background"></div>
+                            <form action="{{ url_for('edit', type='product') }}" method="post" class="base_form">
+                            <div class = "modal-content">
+                               <div class = "box">
+                                <div class="modal-body"><input name="prod_name" class="input is-small is-dark is-rounded" placeholder="{{ product[1] }}">
+                                    <input class="input is-small is-dark is-rounded"name="prod_quantity" placeholder="{{ product[2] }}" id="input_{{ product[0] }}" type="number">
+                                    <text class="font-weight-light">(only increase count)</text>
+                                    <script>
+                                        document.getElementById("input_{{ product[0] }}").oninput = function(){
+                                            let all = document.getElementsByClassName("btn btn-primary");
+                                            for(let i=0;i<all.length;i++){
+                                                all[i].disabled = true;
+                                            }
+                                            const curr_qty = {{ product[2] }};
+                                            let in_qty = parseInt(document.getElementById("input_{{ product[0] }}").value);
+
+                                            //console.log(in_qty);
+                                            //console.log(curr_qty);
+
+                                            if(in_qty > curr_qty){
+                                                //console.log("OKAYY");
+                                                for(let i=0;i<all.length;i++){
+                                                    all[i].disabled = false;
+                                                }
+                                            }
+                                        };
+                                    </script>
+                                </div>
+                                <div class="modal-footer">
+                                    <input name="prod_id" value="{{ product[0] }}" hidden aria-hidden="true">
+                                    <button type="submit" class="button is-black is-small">Save changes</button>
+                                </div>
+                               </div>
+                            </div>
+                            </form>
+                            <button class = "modal-close is-large" aria-label = "close"></button>
+                         </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                <!-- Inserting data --> 
+                <tr>
+                    <form action = "{{ url_for('product') }}" method = "POST">
+                        <td></td>
+                        <td>
+                            <input class="input is-small is-dark is-rounded" name = "prod_name" placeholder="Product Name" required autofocus>
+                        </td>
+                        <td>
+                            <input class="input is-dark is-small is-rounded" name = "prod_quantity" placeholder="Quantity" required>
+                        </td>
+                        <td>
+                            <input type= "submit" class="button is-black is-small is-rounded" value= "Add" /><br>
+                        </td>
+                    </form>
+                </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

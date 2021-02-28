@@ -1,0 +1,65 @@
+{% extends 'base-template.html' %}
+{% block content %}
+<div class="container">
+    <table class="table  is-fullwidth">
+        <thead>
+            <th scope="col">Location ID</th>
+            <th scope="col">Location Name</th>
+            <th></th>
+            <th></th>
+        </thead>
+        <tbody>
+            {% for location in warehouses %}
+                <tr>
+                    <td>{{ location[0] }}</td>
+                    <td>{{ location[1] }}</td>
+                    <td>
+                        <a href="{{ url_for('delete', loc_id=location[0], type='location') }}">
+                            <button name="button" type="button" class="button is-danger is-rounded is-small is-outlined" value= "delete">
+                                <span>Delete</span>
+                                <span class="icon is-small">
+                                    <i class="fa fa-times"></i>
+                                </span>
+                            </button>
+                        </a>
+                    </td>
+                    <td>
+                        <button name="button" value= "edit" type="button" class="button is-dark is-rounded is-small is-outlined" data-toggle="modal" data-target="#edit_{{ location[0] }}" >
+                            <span>Edit</span>
+                            <span class="icon is-small">
+                                <i class="fa fa-pencil"></i>
+                            </span>
+                        </button>
+                        <div id="edit_{{ location[0] }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="trans_message" aria-hidden="true">
+                            <form action="{{ url_for('edit', type='location') }}" method="post">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-body"><input name="loc_name" placeholder="{{ location[1] }}"></div>
+                                        <div class="modal-footer">
+                                            <input name="prod_id" value="{{ product[0] }}" hidden aria-hidden="true">
+                                            <button type="submit" class="button is-black is-small">Save changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <button class = "modal-close is-large" aria-label = "close"></button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                <!-- Inserting data --> 
+                <tr>
+                    <form action = "{{url_for('location')}}" method = "POST">
+                        <td></td>
+                        <td>
+                            <input class="input is-small is-dark is-rounded" name= "warehouse_name" placeholder="Warehouse Name" required autofocus>
+                        </td>
+                        <td>
+                            <input type= "submit" class="button is-black is-small is-rounded" value= "Add" /><br>
+                        </td>
+                    </form>
+                </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}
