@@ -19,3 +19,8 @@ cd inventory
   Go to http://127.0.0.1:5000/ to open the application.
   
 ![Image of Dashboard/Index page](https://github.com/ruthvikl/InventorySystem/blob/main/screenshots/Dashboard.png)
+![Image of Dashboard/Index page](https://github.com/ruthvikl/InventorySystem/blob/main/screenshots/Location.png)
+![Image of Dashboard/Index page](https://github.com/ruthvikl/InventorySystem/blob/main/screenshots/Location_edit.png)
+![Image of Dashboard/Index page](https://github.com/ruthvikl/InventorySystem/blob/main/screenshots/Product.png)
+![Image of Dashboard/Index page](https://github.com/ruthvikl/InventorySystem/blob/main/screenshots/Product_edit.png)
+![Image of Dashboard/Index page](https://github.com/ruthvikl/InventorySystem/blob/main/screenshots/Movement.png)
