@@ -1,33 +1,7 @@
 {% extends 'base-template.html' %}
 {% block content %}
 <div class="container">
-    <h1 class="title is-4" align="center">Summary</h1>
-        {% if database == None or database|length == 0 %}
-            <h3 align="center" class="font-weight-light">Summary not available yet</h3>
-        {%else%}
-        <table class="table is-fullwidth">
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Warehouse</th>
-                    <th>Quantity</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for data in database %}
-                    {% if data[2] != 0 %}
-                        <tr>
-                            <td>{{ data[0] }}</td>
-                            <td>{{ data[1] }}</td>
-                            <td>{{ data[2] }}</td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-            </tbody>
-        </table>
-        {%endif%}
-
-        <h1 align="center" class="title is-4">Make Product Movements</h1>
+    <h1 align="center" class="title is-4">Make Product Movements</h1>
 
         <form action = "{{ url_for('movement') }}" method = "POST">
             <div class="field is-grouped" title="Add logs">
@@ -60,6 +34,33 @@
                 </datalist>
             </div>
         </form>
+    <h1 class="title is-4" align="center">Summary</h1>
+        {% if database == None or database|length == 0 %}
+            <h3 align="center" class="font-weight-light">Summary not available yet</h3>
+        {%else%}
+        <table class="table is-fullwidth">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Warehouse</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in database %}
+                    {% if data[2] != 0 %}
+                        <tr>
+                            <td>{{ data[0] }}</td>
+                            <td>{{ data[1] }}</td>
+                            <td>{{ data[2] }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        {%endif%}
+
+        
 
         
         <h1 align="center" class="title is-4">Logistics History</h1>

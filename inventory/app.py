@@ -205,11 +205,6 @@ def movement():
                 sum_to_loc = (0,)
 
             log_summary += [(temp_prod_name + temp_loc_name + (sum_to_loc[0] - sum_from_loc[0],))]
-
-    # CHECK if reductions are calculated as well!
-    # summary data --> in format:
-    # {'Asus Zenfone 2': {'Mahalakshmi': 50, 'Gorhe': 50},
-    # 'Prada watch': {'Malad': 50, 'Mahalakshmi': 115}, 'Apple iPhone': {'Airoli': 75}}
     alloc_json = {}
     for row in log_summary:
         try:

@@ -2,11 +2,12 @@
 {% block content %}
 <div class="container" style="text-align:center">
     <h1 class="title is-2" align="center">Description</h1>    
-        <div style="float: left;width:50%;">
-            <table class="table ">
+        <div style="float: left;width:50%; align-items: center;">
+            <table class="table" style="margin-left: auto;
+            margin-right: auto;">
                 <thead>
                     <tr>
-                        <th scope="col"> Available Locations</th>
+                        <th> Available Locations</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,38 +27,41 @@
             </table>
         </div>
         
-            <!-- Div to list all products -->
-    <div style="float:right;width:50%;padding-left: 5%;">
-        <table class="table is-fullwidth">
-            <thead>
-                <tr>
-                    <th scope="col">Product</th>
-                    <th scope="col">Un-Allocated</th>
-                    <th scope="col">Total Count</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% if products == None or products|length == 0 %}
-                <div style="float: right;width: 50%;">
-                    <td align="center" class="font-weight-light">No Product Data Available Yet</td>
-                </div>
-                {% else %}
-                    {% if database == None or database|length == 0 %}
-                                <td align="center" class="font-weight-light">Summary not available yet</td>
-                    {% else %}
-                        {% for product in products %}
-                            <tr>
-                                <td>{{ product[1] }}</td>
-                                {% for data in database %}
-                                    <td>{{ data[1] }}</td>
-                                    <td>{{ data[2] }}</td>
-                                {% endfor %}
-                            </tr>
-                        {% endfor %}
-                    {% endif %}
-                {% endif %}
-            </tbody>
-        </table>
-    </div>
+        {% if products == None or products|length == 0 %}
+        <div style="float: right;width: 50%;">
+            <h3 align="center" class="font-weight-light">No Product Data Available Yet</h3>
+        </div>
+    {% else %}
+        <!-- Div to list all products -->
+        <div style="float:right;width:50%;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Name</th>
+                        <th>Count</th>
+                        <th>Un-Allocated</th>
+                        <th>Total Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <td>{{ product[0] }}</td>
+                            <td>{{ product[1] }}</td>
+                            <td>{{ product[2] }}</td>
+                            {% for data in database %}
+                            {%if data[0] == product[1]%}
+                            <td>{{ data[1] }}</td>
+                            <td>{{ data[2] }}</td>
+                            {%endif%}
+                            
+                        {%endfor%}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
 </div>
 {% endblock %}
