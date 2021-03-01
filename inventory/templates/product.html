@@ -49,11 +49,7 @@
                                                     const curr_qty = {{ product[2] }};
                                                     let in_qty = parseInt(document.getElementById("input_{{ product[0] }}").value);
 
-                                                    //console.log(in_qty);
-                                                    //console.log(curr_qty);
-
                                                     if(in_qty > curr_qty){
-                                                        //console.log("OKAYY");
                                                         for(let i=0;i<all.length;i++){
                                                             all[i].disabled = false;
                                                         }

@@ -20,7 +20,6 @@
                     <input name="to_loc" id="to_loc" list="locations_to_from" placeholder="To Warehouse" class="input is-small is-dark is-rounded" autocomplete="off">
                 </div>
                 <div class="control slide-container">
-                    <!--input name="quantity" placeholder="Quantity" class="form-control" autocomplete="off" required-->
                     <input name="quantity" type="range" min="0" value="" class="slider" id="slider_range" required title="Product Range">
                     <p>Value: <span id="show_selected"></span>&nbsp;&nbsp;&nbsp;<span id="max_limit" class="font-weight-light"></span></p>
                 </div>
@@ -96,14 +95,13 @@
 
     <script>
         const products = {};
-        // this contains unallocated products
+        //  unallocated products
         {% for product in products %}
             products["{{ product[1] }}"] = "{{ product[2] }}";
         {% endfor %}
 
-        // this contains all allocated products in form --> product: location: quantity
+        // product: location: quantity
         let summary = JSON.parse({{ allocated|tojson }});
-        //console.log(summary);
 
         let slider = document.getElementById("slider_range");
         let output = document.getElementById("show_selected");
@@ -113,14 +111,12 @@
         let to_loc = document.getElementById("to_loc");
         let from_loc = document.getElementById("from_loc");
 
-        //works fine DON'T TOUCH it lol
         to_loc.onchange = function() {
             let max_val;
             if(!from_loc.value) {
                 max_val = products[(prod_name.value).toString()];
                 slider.setAttribute("max", max_val.toString());
                 max_limit.innerText = "Max: " + max_val;
-                //console.log('to_loc --> from_loc was null ', max_val)
 
                 if(max_val === 0){
                     document.getElementById("submit").disabled = true;
@@ -132,13 +128,11 @@
             output.innerHTML = slider.value;
         };
 
-        //works fine DON'T TOUCH it lol
         from_loc.onchange = function(){
             let max_val;
             max_val = summary[(prod_name.value).toString()][(from_loc.value).toString()];
             slider.setAttribute("max", max_val.toString());
             max_limit.innerText = "Max: " + max_val;
-            //console.log('from_loc --> to location updated ', max_val);
 
             if(max_val === 0){
                 document.getElementById("submit").disabled = true;

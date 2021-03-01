@@ -6,14 +6,14 @@ import sqlite3
 
 DATABASE_NAME = 'inventory.sqlite'
 
-# setting up Flask instance
+# Flask instance Setup
 app = Flask(__name__)
 app.config.from_mapping(
     SECRET_KEY='dev',
     DATABASE=os.path.join(app.instance_path, 'database', DATABASE_NAME),
 )
 
-# listing views
+# View  listings
 link = {x: x for x in ["location", "product", "movement"]}
 link["index"] = '/'
 
@@ -22,7 +22,7 @@ def init_database():
     db = sqlite3.connect(DATABASE_NAME)
     cursor = db.cursor()
 
-    # initialize page content
+    # initialize database
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS products(prod_id INTEGER PRIMARY KEY AUTOINCREMENT,
                     prod_name TEXT UNIQUE NOT NULL,
@@ -40,13 +40,11 @@ def init_database():
 
     """)
 
-    # initialize page content
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS location(loc_id INTEGER PRIMARY KEY AUTOINCREMENT,
                                  loc_name TEXT UNIQUE NOT NULL);
     """)
 
-    # initialize page content
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS logistics(trans_id INTEGER PRIMARY KEY AUTOINCREMENT,
                                 prod_id INTEGER NOT NULL,
@@ -69,7 +67,7 @@ def summary():
     db = sqlite3.connect(DATABASE_NAME)
     cursor = db.cursor()
     try:
-        cursor.execute("SELECT * FROM location")  # <---------------------------------FIX THIS
+        cursor.execute("SELECT * FROM location")
         warehouse = cursor.fetchall()
         cursor.execute("SELECT * FROM products")
         products = cursor.fetchall()
@@ -169,7 +167,6 @@ def movement():
     cursor.execute("SELECT * FROM logistics")
     logistics_data = cursor.fetchall()
 
-    # add suggestive content for page
     cursor.execute("SELECT prod_id, prod_name, unallocated_quantity FROM products")
     products = cursor.fetchall()
 
@@ -218,13 +215,12 @@ def movement():
     alloc_json = json.dumps(alloc_json)
 
     if request.method == 'POST':
-        # transaction times are stored in UTC
         prod_name = request.form['prod_name']
         from_loc = request.form['from_loc']
         to_loc = request.form['to_loc']
         quantity = request.form['quantity']
 
-        # if no 'from loc' is given, that means the product is being shipped to a warehouse (init condition)
+        # No from  loc
         if from_loc in [None, '', ' ']:
             try:
                 cursor.execute("""
@@ -234,7 +230,6 @@ def movement():
                     WHERE products.prod_name == ? AND location.loc_name == ?
                 """, (quantity, prod_name, to_loc))
 
-                # IMPORTANT to maintain consistency
                 cursor.execute("""
                 UPDATE products 
                 SET unallocated_quantity = unallocated_quantity - ? 
@@ -257,7 +252,6 @@ def movement():
                 WHERE products.prod_name == ? AND location.loc_name == ?
                 """, (quantity, prod_name, from_loc))
 
-                # IMPORTANT to maintain consistency
                 cursor.execute("""
                 UPDATE products 
                 SET unallocated_quantity = unallocated_quantity + ? 
@@ -270,7 +264,6 @@ def movement():
             else:
                 msg = "Transaction added successfully"
 
-        # if 'from loc' and 'to_loc' given the product is being shipped between warehouses
         else:
             try:
                 cursor.execute("SELECT loc_id FROM location WHERE loc_name == ?", (from_loc,))
@@ -293,7 +286,6 @@ def movement():
             else:
                 msg = "Transaction added successfully"
 
-        # print a transaction message if exists!
         if msg:
             print(msg)
             return redirect(url_for('movement'))
@@ -319,18 +311,16 @@ def delete():
         cursor.execute("SELECT prod_id, SUM(prod_quantity) FROM logistics WHERE from_loc_id = ? GROUP BY prod_id", (id_,))
         out_place = cursor.fetchall()
 
-        # converting list of tuples to dict
+        # tuples to dict
         in_place = dict(in_place)
         out_place = dict(out_place)
 
-        # print(in_place, out_place)
         all_place = {}
         for x in in_place.keys():
             if x in out_place.keys():
                 all_place[x] = in_place[x] - out_place[x]
             else:
                 all_place[x] = in_place[x]
-        # print(all_place)
 
         for products_ in all_place.keys():
             cursor.execute("""
